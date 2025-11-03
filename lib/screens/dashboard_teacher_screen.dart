@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart'; // for charts
+import 'package:shared_preferences/shared_preferences.dart';
 import 'rmt_screen.dart';
 import 'kedatangan_screen.dart';
 import 'sahsiah_screen.dart';
@@ -137,6 +138,15 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            tooltip: 'Log Keluar',
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await _handleLogout(context);
+            },
+          ),
+        ],
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -169,6 +179,22 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
     );
+  }
+
+  // Clear stored auth and navigate to login
+  static Future<void> _handleLogout(BuildContext context) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+      await prefs.remove('role');
+      await prefs.remove('name');
+    } catch (e) {
+      // ignore errors clearing prefs
+    }
+
+    if (context.mounted) {
+      Navigator.pushReplacementNamed(context, '/');
+    }
   }
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
