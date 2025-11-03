@@ -38,7 +38,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('Dashboards'),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
